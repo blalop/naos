@@ -1,6 +1,7 @@
 ; print functions
 
 ; 16-bit
+[bits 16]
 ; prints a null-terminated string pointed to by BX
 print_string:
 mov ah, 0x0e

@@ -1,4 +1,5 @@
 ; GDT
+[bits 16]
 ; 1st flags: present, privilege(2), descript type
 ; type flags: code, conforming, readable, accessed
 ; 2nd  flags: granularity, 32-bit  default, 64-bit  seg, AVL
