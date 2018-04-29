@@ -1,35 +1,34 @@
-CC= gcc
+CC = gcc
 CFLAGS = -Wall -Werror -Wfatal-errors -m32 -fno-pie -ffreestanding
-SOURCES = (wildcard kernel /*.c drivers /*.c)
-OBJ = ${SOURCES :.c=.o}
+SOURCES = $(wildcard kernel/*.c drivers/*.c)
+HEADERS = $(wildcard kernel/*.h drivers/*.h)
+OBJ = $(SOURCES:.c=.o)
 
-all: dirs naos
+all: naos
 
 run: naos
 	qemu-system-x86_64 -drive format=raw,if=floppy,file=naos
 
-naos: build/boot.bin build/kernel.bin
+naos: boot/boot.bin kernel.bin
 	cat $^ > $@
 
-build/boot.bin: boot/boot.asm
-	nasm boot/boot.asm -f bin -o $@
 
-build/kernel.bin: build/kernel_call.o build/kernel.o
+kernel.bin: boot/kernel_call.o $(OBJ)
 	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
 
-build/kernel_call.o: kernel/kernel_call.asm
-	nasm $< -f elf -o $@
-
-build/kernel.o: kernel/kernel.c
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-kernel.dis: build/kernel.bin
-	ndisasm -b 32 $< > $@
+%.o: %.asm
+	nasm $< -f elf -o $@
 
-.PHONY: dirs
-dirs:
-	mkdir -p build
+%.bin: %.asm
+	nasm $< -f bin -o $@
+
+kernel.dis: kernel.bin
+	ndisasm -b 32 $< > $@
 
 .PHONY: clean
 clean:
-	rm -rf build naos
+	rm -rf *.bin *.dis *.o naos
+	rm -rf kernel/*.o drivers/*.o boot/*.o boot/*.bin

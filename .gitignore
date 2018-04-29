@@ -1,2 +1,4 @@
-build/
 naos
+*.bin
+*.o
+

@@ -1,6 +1,7 @@
-
+#include "../drivers/screen.h"
 
 void main() {
-    char *video_mem = (char*) 0xb8000;
-    *video_mem = 'X';
+    kprint("\nKernel loaded\n\n");
+
+    return;
 }

@@ -13,7 +13,7 @@ cmp al, 0
 jg print_string_loop
 ret
 
-; 32-bit
+; 32-bit / PM
 [bits 32]
 VIDEO_MEMORY equ 0xb8000 ; start address
 WHITE_ON_BLACK equ 0x0f ; ASCII attributes
