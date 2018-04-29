@@ -9,7 +9,7 @@ mov cr0, eax
 jmp CODE_SEG:init_pm ; Clear pipeline
 
 [bits  32]
-; Initialise  registers and the stack once in PM.
+; Initialise registers and the stack once in PM
 init_pm:
 mov ax, DATA_SEG
 mov ds, ax

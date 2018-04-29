@@ -1,9 +1,11 @@
 ; boot sector
 [org 0x7c00]
 
+; kernel offset at 0x1000
 KERNEL_OFFSET equ 0x1000
 mov [BOOT_DRIVE], dl
 
+; set up the stack
 mov bp, 0x9000
 mov sp, bp
 
@@ -14,10 +16,10 @@ call switch_to_pm
 
 jmp $
 
-%include "disk.s"
-%include "gdt.s"
-%include "pm.s"
-%include "print.s"
+%include "boot/disk.asm"
+%include "boot/gdt.asm"
+%include "boot/pm.asm"
+%include "boot/print.asm"
 
 [bits  16]
 load_kernel:
@@ -37,7 +39,7 @@ call  KERNEL_OFFSET
 jmp $
 
 ; Global  variables
-BOOT_DRIVE        db 0
+BOOT_DRIVE       db 0
 MSG_REAL_MODE    db "Started  in 16-bit  Real  Mode", 0
 MSG_PROT_MODE    db "Successfully  landed  in 32-bit  Protected  Mode", 0
 MSG_LOAD_KERNEL  db "Loading  kernel  into  memory.", 0
