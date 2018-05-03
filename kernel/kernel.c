@@ -3,5 +3,6 @@
 void main() {
     kprint("\nKernel loaded\n\n");
 
+    kprint("\nWelcome");
     return;
 }

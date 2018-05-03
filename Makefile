@@ -1,5 +1,9 @@
-CC = gcc
-CFLAGS = -Wall -Werror -Wfatal-errors -m32 -fno-pie -ffreestanding
+CC = /usr/local/cross/bin/i686-elf-gcc
+CXX = /usr/local/cross/bin/i686-elf-g++
+LD = /usr/local/cross/bin/i686-elf-ld
+AS = nasm
+CFLAGS = -Wall -Wextra -Werror -Wfatal-errors -fno-pie -ffreestanding
+CXXFLAGS =  -fno-exceptions -fno-rtti
 SOURCES = $(wildcard kernel/*.c drivers/*.c)
 HEADERS = $(wildcard kernel/*.h drivers/*.h)
 OBJ = $(SOURCES:.c=.o)
@@ -12,21 +16,20 @@ run: naos
 naos: boot/boot.bin kernel.bin
 	cat $^ > $@
 
-
 kernel.bin: boot/kernel_call.o $(OBJ)
-	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
+	$(LD) -o $@ -Ttext 0x1000 $^ --oformat binary -nostdlib
 
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+%.o: %.cpp $(HEADERS)
+	$(CXX) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
+
 %.o: %.asm
-	nasm $< -f elf -o $@
+	$(AS) $< -f elf -o $@
 
 %.bin: %.asm
-	nasm $< -f bin -o $@
-
-kernel.dis: kernel.bin
-	ndisasm -b 32 $< > $@
+	$(AS) $< -f bin -o $@
 
 .PHONY: clean
 clean:
