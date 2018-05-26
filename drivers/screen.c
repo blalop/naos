@@ -1,109 +1,96 @@
-#include "screen.h"
 #include "ports.h"
+#include "screen.h"
 
-int get_cursor_offset();
-void set_cursor_offset(int offset);
-int print_char(char character, int col, int row, char attr);
-int get_offset(int col, int row);
-int get_offset_row(int offset);
-int get_offset_col(int offset);
+static void put_char(char c);
+static void update_cursor();
+static inline size_t get_cursor();
+static inline uint8_t vga_entry_color(vgacolor_t fg, vgacolor_t bg);
+static inline uint16_t vga_entry(char c, uint8_t color);
+
+static volatile size_t cursor_x;
+static volatile size_t cursor_y;
 
 void kprint(char *message) {
-    kprint_at(message, -1, -1);
-}
-
-void kprintc(char *message, char charcolor, char backcolor) {
-    kprintc_at(message, -1, -1, charcolor, backcolor);
-}
-
-void kprint_at(char *message, int col, int row) {
-    kprintc_at(message, col, row, WHITE, BLACK);
-}
-
-void kprintc_at(char *message, int col, int row, char charcolor, char backcolor) {
-    int offset;
-
-    if (col >= 0 && row >= 0) {
-        offset = get_offset(col, row);
-    } else {
-        offset = get_cursor_offset();
-        row = get_offset_row(offset);
-        col = get_offset_col(offset);
+    size_t i = 0;
+    while (message[i] != 0) {
+        put_char(message[i++]);
     }
+}
 
-    for (int i = 0; message[i] != 0; i++) {
-        offset = print_char(message[i], col, row, COLOR_CALC(charcolor, backcolor));
-        row = get_offset_row(offset);
-        col = get_offset_col(offset);
+void kprint_at(char c, size_t col, size_t row, vgacolor_t charcolor, vgacolor_t backcolor) {
+    if (col < MAX_COLS || row < MAX_ROWS) { 
+        VIDEO_ADDRESS[col + MAX_COLS * row] = vga_entry(c, vga_entry_color(charcolor, backcolor));
     }
 }
 
 void clear_screen() {
-    unsigned char *vidaddr = (unsigned char*) VIDEO_ADDRESS;
-
-    for (int i = 0; i < MAX_COLS * MAX_ROWS; i++) {
-        vidaddr[i * 2] = ' ';
-        vidaddr[i * 2 + 1] = COLOR_CALC(WHITE, BLACK);
+    for (size_t i = 0; i < MAX_COLS * MAX_ROWS; i++) {
+        VIDEO_ADDRESS[i] = vga_entry(' ', 0);
     }
-    set_cursor_offset(get_offset(0, 0));
+    cursor_x = cursor_y = 0;
+    update_cursor();
 }
-
 
 // private
-int print_char(char c, int col, int row, char attr) {
-    unsigned char *vidaddr = (unsigned char*) VIDEO_ADDRESS;
-    
-    // default attr
-    if (!attr) attr =  COLOR_CALC(WHITE, BLACK);
-
-    // error control
-    if (col >= MAX_COLS || row >= MAX_ROWS) {
-        vidaddr[2*(MAX_COLS)*(MAX_ROWS)-2] = 'E';
-        vidaddr[2*(MAX_COLS)*(MAX_ROWS)-1] = COLOR_CALC(RED, WHITE);
-        return get_offset(col, row);
+void put_char(char c) {
+    // check char
+    switch (c) {
+        case '\b':
+            if (cursor_x > 0) {
+                cursor_x--;
+            }
+            break;
+        case '\n':
+            cursor_x = 0;
+            cursor_y++;
+            break;
+        case '\r':
+            cursor_x = 0;
+            break;
+        case '\t':
+            cursor_x = (cursor_x + 8) & ~(8 - 1);
+            break;
+        case ' ' ... '~':
+            VIDEO_ADDRESS[get_cursor()] = vga_entry(c, vga_entry_color(LIGHT_GRAY, BLACK));
+            cursor_x++;
+            break;
     }
 
-    int offset;
-    if (col >= 0 && row >= 0) offset = get_offset(col, row);
-    else offset = get_cursor_offset();
-
-    if (c == '\n') {
-        row = get_offset_row(offset);
-        offset = get_offset(0, row + 1);
-    } else {
-        vidaddr[offset] = c;
-        vidaddr[offset+1] = attr;
-        offset += 2;
+    // new line
+    if (cursor_x >= MAX_COLS) {
+        cursor_x = 0;
+        cursor_y++;
     }
-    set_cursor_offset(offset);
-    return offset;
+
+    // scroll
+    if (cursor_y >= MAX_ROWS) {
+        for (size_t i = 0; i < MAX_COLS * (MAX_ROWS - 1); i++) {
+            VIDEO_ADDRESS[i] = VIDEO_ADDRESS[i + MAX_COLS];
+        }
+        for (size_t i = MAX_COLS * (MAX_ROWS - 1); i < MAX_COLS * MAX_ROWS; i++) {
+            VIDEO_ADDRESS[i] = vga_entry(' ', 0);
+        }
+        cursor_y = MAX_ROWS - 1;
+    }
+    update_cursor();
 }
 
-int get_cursor_offset() {
+void update_cursor() {
+    size_t cursor = get_cursor();
     port_byte_out(REG_SCREEN_CTRL, 14);
-    int offset = port_byte_in(REG_SCREEN_DATA) << 8;
+    port_byte_out(REG_SCREEN_DATA, cursor >> 8);
     port_byte_out(REG_SCREEN_CTRL, 15);
-    offset += port_byte_in(REG_SCREEN_DATA);
-    return offset * 2;
+    port_byte_out(REG_SCREEN_DATA, cursor);
 }
 
-void set_cursor_offset(int offset) {
-    offset /= 2;
-    port_byte_out(REG_SCREEN_CTRL, 14);
-    port_byte_out(REG_SCREEN_DATA, (unsigned char)(offset >> 8));
-    port_byte_out(REG_SCREEN_CTRL, 15);
-    port_byte_out(REG_SCREEN_DATA, (unsigned char)(offset & 0xff));
+size_t get_cursor() {
+    return cursor_x + cursor_y * MAX_COLS;
 }
 
-
-int get_offset(int col, int row) {
-    return 2 * (row * MAX_COLS + col);
+uint16_t vga_entry(char c, uint8_t color) {
+	return color << 8 | c;
 }
 
-int get_offset_row(int offset) {
-    return offset / (2 * MAX_COLS);
-}
-
-int get_offset_col(int offset) {
-    return (offset - (get_offset_row(offset) * 2 * MAX_COLS)) / 2;
+uint8_t vga_entry_color(vgacolor_t fg, vgacolor_t bg) {
+	return bg << 4 | fg;
 }
