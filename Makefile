@@ -1,21 +1,18 @@
 CC = i686-elf-gcc
 LD = i686-elf-ld
 AS = nasm
-CFLAGS = -Wall -Wextra -fno-pie -ffreestanding
-SOURCES = $(wildcard kernel/*.c drivers/*.c lib/*.c)
-HEADERS = $(wildcard kernel/*.h drivers/*.h lib/*.c)
-OBJ = $(SOURCES:.c=.o)
+CFLAGS = -Wall -Wextra -fno-pie -ffreestanding -nostdlib
+SOURCES = $(wildcard kernel/*.c kernel/arch/i686/*.c libc/*.c)
+HEADERS = $(wildcard kernel/*.h kernel/arch/i686/*.h libc/*.h)
+OBJECTS = $(SOURCES:.c=.o)
 
 all: naos
 
 run: naos
-	qemu-system-x86_64 -drive format=raw,if=floppy,file=naos
+	qemu-system-x86_64 -kernel naos
 
-naos: boot/boot.bin kernel.bin
-	cat $^ > $@
-
-kernel.bin: boot/kernel_call.o $(OBJ)
-	$(LD) -o $@ -Ttext 0x1000 $^ --oformat binary -nostdlib
+naos: kernel/arch/i686/boot.o $(OBJECTS)
+	$(CC) -T linker.ld -o $@ $(CFLAGS) $^ 
 
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -29,4 +26,4 @@ kernel.bin: boot/kernel_call.o $(OBJ)
 .PHONY: clean
 clean:
 	rm -rf *.bin *.dis *.o naos
-	rm -rf lib/*.o kernel/*.o drivers/*.o boot/*.o boot/*.bin
+	rm -rf libc/*.o kernel/*.o drivers/*.o boot/*.o boot/*.bin

@@ -1,11 +1,9 @@
 #include "ports.h"
-#include "screen.h"
+#include "vga.h"
 
 static void put_char(char c);
 static void update_cursor();
 static inline size_t get_cursor();
-static inline uint8_t vga_entry_color(vgacolor_t fg, vgacolor_t bg);
-static inline uint16_t vga_entry(char c, uint8_t color);
 
 static volatile size_t cursor_x;
 static volatile size_t cursor_y;
@@ -18,7 +16,7 @@ void kprint(char *message) {
 }
 
 void kprint_at(char c, size_t col, size_t row, vgacolor_t charcolor, vgacolor_t backcolor) {
-    if (col < MAX_COLS || row < MAX_ROWS) { 
+    if (col < MAX_COLS && row < MAX_ROWS) { 
         VIDEO_ADDRESS[col + MAX_COLS * row] = vga_entry(c, vga_entry_color(charcolor, backcolor));
     }
 }
@@ -85,12 +83,4 @@ void update_cursor() {
 
 size_t get_cursor() {
     return cursor_x + cursor_y * MAX_COLS;
-}
-
-uint16_t vga_entry(char c, uint8_t color) {
-	return color << 8 | c;
-}
-
-uint8_t vga_entry_color(vgacolor_t fg, vgacolor_t bg) {
-	return bg << 4 | fg;
 }

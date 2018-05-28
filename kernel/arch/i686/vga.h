@@ -1,12 +1,13 @@
-#ifndef NAOS_SCREEN_H
-#define NAOS_SCREEN_H
+#ifndef NAOS_VGA_H
+#define NAOS_VGA_H
 
-#include "../kernel/common.h"
+#include <stdint.h>
+#include <stddef.h>
 
 #define MAX_ROWS 25
 #define MAX_COLS 80
 
-static uint16_t * const VIDEO_ADDRESS = (uint16_t*) 0xB8000;
+static uint16_t * const VIDEO_ADDRESS = (uint16_t*)  0xB8000;
 
 typedef enum {
 	BLACK,
@@ -30,5 +31,13 @@ typedef enum {
 void kprint(char *message);
 void kprint_at(char c, size_t col, size_t row, vgacolor_t charcolor, vgacolor_t backcolor);
 void clear_screen();
+
+static inline uint16_t vga_entry(char c, uint8_t color) {
+	return color << 8 | c;
+}
+
+static inline uint8_t vga_entry_color(vgacolor_t fg, vgacolor_t bg) {
+	return bg << 4 | fg;
+}
 
 #endif

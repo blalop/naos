@@ -1,7 +1,7 @@
 #ifndef NAOS_PORTS_H
 #define NAOS_PORTS_H
 
-#include "../kernel/common.h"
+#include <stdint.h>
 
 #define REG_SCREEN_CTRL 0x3D4
 #define REG_SCREEN_DATA 0x3D5

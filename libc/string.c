@@ -8,6 +8,11 @@ void *memcpy(void *s1, void *s2, size_t n) {
     }
 	return ss1;
 }
+char *strcpy(char *destination, const char *source) {
+    size_t i = 0;
+    while ((destination[i] = source[i]) != '\0') i++;
+	return destination;
+}
 
 size_t strlen(const char *str) {
 	size_t s = 0;
