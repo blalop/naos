@@ -1,8 +1,8 @@
 #ifndef NAOS_VGA_H
 #define NAOS_VGA_H
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #define MAX_ROWS 25
 #define MAX_COLS 80
@@ -28,11 +28,11 @@ typedef enum {
 	WHITE,
 } vgacolor_t;
 
-void kprint(char *message);
-void kprint_at(char c, size_t col, size_t row, vgacolor_t charcolor, vgacolor_t backcolor);
+void kprint(const char *message);
+void kprint_at(const char character, size_t col, size_t row, vgacolor_t charcolor, vgacolor_t backcolor);
 void clear_screen();
 
-static inline uint16_t vga_entry(char c, uint8_t color) {
+static inline uint16_t vga_entry(const char c, uint8_t color) {
 	return color << 8 | c;
 }
 

@@ -1,4 +1,5 @@
-#include "arch/i686/vga.h"
+#include <stdio.h>
+#include <tty.h>
 
 #if defined(__linux__) || !defined(__i686__)
 #error The compiler is not cross-compiler
@@ -7,6 +8,8 @@
 void kernel_main() {
     clear_screen();
     kprint("\nKernel loaded\n\n");
-    kprint("Welcome");
+    puts("Welcome");
+    putchar('a');
+    puts("AAABBB");
     return;
 }

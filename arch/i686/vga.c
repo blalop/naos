@@ -8,16 +8,16 @@ static inline size_t get_cursor();
 static volatile size_t cursor_x;
 static volatile size_t cursor_y;
 
-void kprint(char *message) {
+void kprint(const char *message) {
     size_t i = 0;
     while (message[i] != 0) {
         put_char(message[i++]);
     }
 }
 
-void kprint_at(char c, size_t col, size_t row, vgacolor_t charcolor, vgacolor_t backcolor) {
+void kprint_at(const char character, size_t col, size_t row, vgacolor_t charcolor, vgacolor_t backcolor) {
     if (col < MAX_COLS && row < MAX_ROWS) { 
-        VIDEO_ADDRESS[col + MAX_COLS * row] = vga_entry(c, vga_entry_color(charcolor, backcolor));
+        VIDEO_ADDRESS[col + MAX_COLS * row] = vga_entry(character, vga_entry_color(charcolor, backcolor));
     }
 }
 
