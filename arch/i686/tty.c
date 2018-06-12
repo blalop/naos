@@ -2,8 +2,8 @@
 #include "vga.h"
 
 static void put_char(char c);
-static void update_cursor();
-static inline size_t get_cursor();
+static void update_cursor(void);
+static inline size_t get_cursor(void);
 
 static volatile size_t cursor_x;
 static volatile size_t cursor_y;
@@ -15,13 +15,19 @@ void kprint(const char *message) {
     }
 }
 
+void kprint_size(const char *message, size_t size) {
+    for(size_t i = 0; i < size; i++) {
+        put_char(message[i]);
+    }
+}
+
 void kprint_at(const char character, size_t col, size_t row, vgacolor_t charcolor, vgacolor_t backcolor) {
     if (col < MAX_COLS && row < MAX_ROWS) { 
         VIDEO_ADDRESS[col + MAX_COLS * row] = vga_entry(character, vga_entry_color(charcolor, backcolor));
     }
 }
 
-void clear_screen() {
+void clear_screen(void) {
     for (size_t i = 0; i < MAX_COLS * MAX_ROWS; i++) {
         VIDEO_ADDRESS[i] = vga_entry(' ', 0);
     }
@@ -73,7 +79,7 @@ void put_char(char c) {
     update_cursor();
 }
 
-void update_cursor() {
+void update_cursor(void) {
     size_t cursor = get_cursor();
     port_byte_out(REG_SCREEN_CTRL, 14);
     port_byte_out(REG_SCREEN_DATA, cursor >> 8);
@@ -81,6 +87,6 @@ void update_cursor() {
     port_byte_out(REG_SCREEN_DATA, cursor);
 }
 
-size_t get_cursor() {
+size_t get_cursor(void) {
     return cursor_x + cursor_y * MAX_COLS;
 }

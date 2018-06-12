@@ -28,10 +28,6 @@ typedef enum {
 	WHITE,
 } vgacolor_t;
 
-void kprint(const char *message);
-void kprint_at(const char character, size_t col, size_t row, vgacolor_t charcolor, vgacolor_t backcolor);
-void clear_screen();
-
 static inline uint16_t vga_entry(const char c, uint8_t color) {
 	return color << 8 | c;
 }

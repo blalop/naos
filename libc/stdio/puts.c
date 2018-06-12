@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../../arch/i686/vga.h"
+#include <tty.h>
 
 int puts(const char *str) {
 	kprint(str);
