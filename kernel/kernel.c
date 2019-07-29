@@ -1,15 +1,13 @@
-#include <stdio.h>
-#include <tty.h>
 
 #if !defined(__i686__)
-#error The compiler is not cross-compiler
+#error The compiler is not cross-compiler!
 #endif
 
-void kernel_main(void) {
-    clear_screen();
-    kprint("\nKernel loaded\n\n");
-    puts("Welcome");
-    putchar('a');
-    puts("AAABBB");
-    return;
+#include "arch/i686/tty.h"
+#include "stdio.h"
+
+void kmain(void) {
+    tty_clear_screen();
+    printf("\nWelcome\n");
+    while (1);
 }
