@@ -2,6 +2,8 @@
 
 #include "string.h"
 
+#include <stdint.h>
+
 void itoa(int n, char *s) {
     int sign, i = 0;
 
@@ -19,5 +21,14 @@ void itoa(int n, char *s) {
         char aux = s[i];
         s[i] = s[j];
         s[j] = aux;
+    }
+}
+
+void swap(void *a, void *b, size_t size) {
+    uint8_t *p = a, *q = b, aux;
+    for (size_t i = 0; i < size; i++) {
+        aux = p[i];
+        p[i] = q[i];
+        q[i] = aux;
     }
 }

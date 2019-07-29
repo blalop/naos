@@ -4,8 +4,10 @@
 #include <stdarg.h>
 
 int putchar(int c);
-int puts(const char *str);
-int vprintf(const char *fmt, va_list arg);
-int printf(const char *fmt, ...);
+int puts(const char *restrict str);
+int vprintf(const char *restrict fmt, va_list arg);
+int printf(const char *restrict fmt, ...);
 
-#endif // _STDIO_H
+void clearscreen(void);
+
+#endif  // _STDIO_H

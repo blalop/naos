@@ -3,11 +3,11 @@
 #error The compiler is not cross-compiler!
 #endif
 
-#include "arch/i686/tty.h"
-#include "stdio.h"
+#include <stdio.h>
 
 void kmain(void) {
-    tty_clear_screen();
+    clearscreen();
     printf("\nWelcome\n");
-    while (1);
+    while (1)
+        ;
 }

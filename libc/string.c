@@ -11,12 +11,22 @@ void *memcpy(void *dst, const void *src, size_t n) {
     return ss1;
 }
 
+int strcmp(const char *s1, const char *s2) {
+    while (*s1 && *s1 == *s2) {
+        s1++;
+        s2++;
+    }
+    return *(const unsigned char *)s1 - *(const unsigned char *)s2;
+}
+
 char *strcpy(char *dst, const char *src) {
     size_t i = 0;
-    while ((dst[i] = src[i]) != '\0')
+    while ((dst[i] = src[i]) != '\0') {
         i++;
+    }
     return dst;
 }
+
 size_t strlen(const char *str) {
     size_t s = 0;
     while (str[s]) {

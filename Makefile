@@ -1,5 +1,4 @@
 CC = tools/bin/i686-elf-gcc
-LD = tools/bin/i686-elf-ld
 AS = tools/bin/i686-elf-as
 CFLAGS = -std=gnu11 -Wall -Wextra -fdiagnostics-color=always -fno-pie -ffreestanding -nostdlib -Ilibc
 SOURCES = $(wildcard kernel/*.c kernel/arch/i686/*.c libc/*.c)

@@ -1,6 +1,9 @@
 #ifndef _STDLIB_H
 #define _STDLIB_H 1
 
-void itoa(int n, char *s);
+#include <stddef.h>
 
-#endif // _STDLIB_H
+void itoa(int n, char *s);
+void swap(void *a, void *b, size_t size);
+
+#endif  // _STDLIB_H
