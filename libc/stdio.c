@@ -5,7 +5,7 @@
 #include "string.h"
 
 int putchar(int c) {
-    tty_kprint(c);
+    tty_print(c);
     return 0;
 }
 
@@ -64,4 +64,4 @@ int printf(const char *restrict fmt, ...) {
     return printed;
 }
 
-void clearscreen(void) { tty_clear_screen(); }
+void clearscreen(void) { tty_clear(); }

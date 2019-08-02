@@ -1,9 +1,15 @@
+/**
+ * @file
+ * @brief TTY related functionality.
+ *
+ */
 
 #ifndef KERNEL_TTY_H
 #define KERNEL_TTY_H
 
-#include <stddef.h>
-
+/**
+ * Available VGA Colors
+ */
 typedef enum vgacolor_ {
     BLACK,
     BLUE,
@@ -23,9 +29,25 @@ typedef enum vgacolor_ {
     WHITE,
 } vgacolor_t;
 
-void tty_kprint(char c);
-void tty_kprint_color(char c, vgacolor_t fg, vgacolor_t bg);
-void tty_kdraw(char c, size_t col, size_t row, vgacolor_t fg, vgacolor_t bg);
-void tty_clear_screen(void);
+/**
+ * Print the parameter in the correspondent place
+ *
+ * @param c The character to be printed
+ */
+void tty_print(char c);
 
-#endif // KERNEL_TTY_H
+/**
+ * Print the parameter in the correspondent place with color
+ *
+ * @param c The character to be printed
+ * @param fg The foreground color
+ * @param bg The background color
+ */
+void tty_printc(char c, vgacolor_t fg, vgacolor_t bg);
+
+/**
+ * @brief Clears the TTY
+ */
+void tty_clear(void);
+
+#endif  // KERNEL_TTY_H

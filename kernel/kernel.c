@@ -1,3 +1,7 @@
+/**
+ * @file
+ * Kernel main file.
+ */
 
 #if !defined(__i686__)
 #error The compiler is not cross-compiler!
@@ -5,6 +9,7 @@
 
 #include <stdio.h>
 
+/** The kernel main function. */
 void kmain(void) {
     clearscreen();
     printf("\nWelcome\n");

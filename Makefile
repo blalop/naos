@@ -12,6 +12,7 @@ all: naos.bin
 run: naos.bin
 	qemu-system-i386 -kernel naos.bin
 
+# Main project
 naos.bin: $(OBJECTS)
 	$(CC) -T linker.ld -o $@ $(CFLAGS) $^
 
@@ -24,6 +25,11 @@ naos.bin: $(OBJECTS)
 .PHONY: clean
 clean:
 	rm -f $(OBJECTS) naos.bin
+
+# Documentation
+.PHONY: docs
+docs:
+	doxygen
 
 # Cross compiler and binutils
 PREFIX = $(shell pwd)/tools
