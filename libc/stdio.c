@@ -21,10 +21,11 @@ int vprintf(const char *restrict fmt, va_list arg) {
     char buffer[20];
 
     while (*fmt) {
-        if (*fmt++ == '%') {
+        if (*fmt == '%') {
             char c;
             char *s;
             int d;
+            fmt++;
             switch (*fmt++) {
                 case '%':
                     putchar('%');
@@ -49,7 +50,7 @@ int vprintf(const char *restrict fmt, va_list arg) {
                     continue;
             }
         } else {
-            putchar(*fmt);
+            putchar(*fmt++);
             printed++;
         }
     }

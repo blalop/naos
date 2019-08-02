@@ -1,3 +1,8 @@
+/**
+ * @file
+ * @brief Cursor helper file
+ *
+ */
 
 #ifndef KERNEL_CURSOR_H
 #define KERNEL_CURSOR_H

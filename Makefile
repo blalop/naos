@@ -2,10 +2,11 @@ CC = tools/bin/i686-elf-gcc
 AS = tools/bin/i686-elf-as
 CFLAGS = -std=gnu11 -Wall -Wextra -fdiagnostics-color=always -fno-pie -ffreestanding -nostdlib -Ilibc
 SOURCES = $(wildcard kernel/*.c kernel/arch/i686/*.c libc/*.c)
+ASM_SOURCES = $(wildcard kernel/arch/i686/*.s)
 HEADERS = $(wildcard kernel/*.h kernel/arch/i686/*.h libc/*.h)
-OBJECTS = $(SOURCES:.c=.o) kernel/arch/i686/boot.o
+OBJECTS = $(SOURCES:.c=.o) $(ASM_SOURCES:.s=.o)
 
-.PHONY: tools all
+.PHONY: all
 all: naos.bin
 
 .PHONY: run

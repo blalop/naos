@@ -11,6 +11,15 @@ void *memcpy(void *dst, const void *src, size_t n) {
     return ss1;
 }
 
+void *memset(void *str, int c, size_t n) {
+    unsigned char *dst = str;
+    while (n > 0) {
+        *dst++ = (unsigned char)c;
+        n--;
+    }
+    return str;
+}
+
 int strcmp(const char *s1, const char *s2) {
     while (*s1 && *s1 == *s2) {
         s1++;

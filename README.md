@@ -4,7 +4,6 @@ naos is my personal attempt for making some systems programming. Just for fun.
 
 
 ## OS Features
-* Not POSIX compliant (although inspired, so several functions from the standard lib may resemble POSIX)
 * As simple as possible (so assumptions will be made)
 
 ## OS Structure
@@ -16,7 +15,7 @@ There is a standard library in `libc` directory. It will increase in time.
 - [x] Boot in assembly
 - [x] Call C
 - [x] Print something
-- [ ] Interrupts
+- [x] Interrupts
 - [ ] Keyboard
 - [ ] Shell
 - [ ] FP support
