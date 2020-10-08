@@ -1,5 +1,4 @@
-#ifndef _STRING_H
-#define _STRING_H 1
+#pragma once
 
 #include <stddef.h>
 
@@ -8,5 +7,3 @@ void *memset(void *str, int c, size_t n);
 int strcmp(const char *s1, const char *s2);
 char *strcpy(char *dst, const char *src);
 size_t strlen(const char *str);
-
-#endif  // _STRING_H

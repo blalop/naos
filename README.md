@@ -3,15 +3,9 @@
 naos is my personal attempt for making some systems programming. Just for fun.
 
 
-## OS Features
-* As simple as possible (so assumptions will be made)
-
-## OS Structure
-All the code that interacts directly with the hardware resides in `kernel`. The subdirectory `arch/i686` contains the routines specific to x86.
-
-There is a standard library in `libc` directory. It will increase in time.
-
 ## OS Roadmap
+Trying to be POSIX compliant.
+
 - [x] Boot in assembly
 - [x] Call C
 - [x] Print something

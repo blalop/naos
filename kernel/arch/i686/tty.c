@@ -1,14 +1,15 @@
 
 #include "tty.h"
-#include "cursor.h"
 
 #include <stddef.h>
 #include <stdint.h>
 
-static const size_t MAX_ROWS = 25;                           // TTY rows.
-static const size_t MAX_COLS = 80;                           // TTY columns.
-static uint16_t *const VIDEO_ADDRESS = (uint16_t *)0xB8000;  // Video Address
-static volatile cursor_t cursor;                             // TTY cursor
+#include "cursor.h"
+
+static const size_t MAX_ROWS = 25;
+static const size_t MAX_COLS = 80;
+static uint16_t *const VIDEO_ADDRESS = (uint16_t *)0xB8000;
+static volatile cursor_t cursor;
 
 static inline uint16_t vga_entry(char c, vgacolor_t fg, vgacolor_t bg) {
     uint8_t color = bg << 4 | fg;

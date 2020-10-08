@@ -1,5 +1,4 @@
-#ifndef _MATH_H
-#define _MATH_H 1
+#pragma once
 
 int abs(int n);
 long labs(long n);
@@ -17,5 +16,3 @@ typedef struct ldiv_ {
 
 div_t div(int x, int y);
 ldiv_t ldiv(long x, long y);
-
-#endif // _MATH_H

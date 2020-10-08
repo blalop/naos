@@ -1,5 +1,4 @@
-#ifndef _STDIO_H
-#define _STDIO_H 1
+#pragma once
 
 #include <stdarg.h>
 
@@ -11,5 +10,3 @@ int printf(const char *restrict fmt, ...);
 #ifndef NAOS_STRICT_POSIX
 void clearscreen(void);
 #endif  // NAOS_STRICT_POSIX
-
-#endif  // _STDIO_H
