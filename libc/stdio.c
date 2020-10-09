@@ -64,5 +64,3 @@ int printf(const char *restrict fmt, ...) {
     va_end(arg);
     return printed;
 }
-
-void clearscreen(void) { tty_clear(); }

@@ -1,10 +1,7 @@
-
 #include "tty.h"
 
-#include <stddef.h>
-#include <stdint.h>
-
 #include "cursor.h"
+#include "types.h"
 
 static const size_t MAX_ROWS = 25;
 static const size_t MAX_COLS = 80;
@@ -17,6 +14,12 @@ static inline uint16_t vga_entry(char c, vgacolor_t fg, vgacolor_t bg) {
 }
 
 void tty_print(char c) { tty_printc(c, LIGHT_GRAY, BLACK); }
+
+void tty_prints(char *s) {
+    while (*s) {
+        tty_print(*s++);
+    }
+}
 
 void tty_printc(char c, vgacolor_t fg, vgacolor_t bg) {
     switch (c) {

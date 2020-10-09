@@ -1,10 +1,6 @@
-/**
- * @file
- * @brief TTY related functionality.
- *
- */
-
 #pragma once
+
+// TTY related functionality.
 
 typedef enum vgacolor_ {
     BLACK,
@@ -26,6 +22,8 @@ typedef enum vgacolor_ {
 } vgacolor_t;
 
 void tty_print(char c);
+
+void tty_prints(char* s);
 
 void tty_printc(char c, vgacolor_t fg, vgacolor_t bg);
 

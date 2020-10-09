@@ -1,16 +1,9 @@
-/**
- * @file
- * @brief x86 I/O ports.
- *
- * An I/O port is an specific address on the IO bus. Communication with devices
- * is made by reading and writing this specific address.
- *
- * @see https://wiki.osdev.org/I/O_Ports
- */
-
 #pragma once
 
-#include <stdint.h>
+#include "types.h"
+
+// x86 I/O ports
+// see https://wiki.osdev.org/I/O_Ports
 
 static const uint16_t REG_SCREEN_CTRL = 0x3D4;
 static const uint16_t REG_SCREEN_DATA = 0x3D5;

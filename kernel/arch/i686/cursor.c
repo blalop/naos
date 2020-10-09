@@ -1,7 +1,6 @@
 #include "cursor.h"
 #include "ports.h"
 
-#include <stdint.h>
 
 size_t cursor_offset(cursor_t cursor, size_t width) {
     return cursor.x + cursor.y * width;

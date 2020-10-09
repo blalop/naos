@@ -1,10 +1,10 @@
-/*
- * https://wiki.osdev.org/GDT_Tutorial
- * https://web.archive.org/web/20160327011227/http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html
- */
 #pragma once
 
-#include <stdint.h>
+#include "types.h"
+
+// Descriptor tables (GDT, IDT)
+// see
+// https://web.archive.org/web/20160327011227/http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html
 
 typedef struct gdt_entry_ {
     uint16_t limit_low;

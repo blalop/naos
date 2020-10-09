@@ -2,16 +2,16 @@
 #error The compiler is not cross-compiler!
 #endif
 
-#include <stdio.h>
-
 #include "arch/i686/dt.h"
+#include "arch/i686/tty.h"
 
 void kinit(void) {
     dt_init();
-    clearscreen();
+    tty_clear();
 
-    printf("Welcome %d\n\n", 1);
-    asm volatile("int $2");
+    tty_prints("Welcome\n\n");
+    asm volatile("int $3");
+    asm volatile("int $3");
 }
 
 void kloop(void) {}
