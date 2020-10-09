@@ -1,4 +1,5 @@
 *.bin
 *.o
-tools
-docs
+
+toolchain/*
+!toolchain/Makefile

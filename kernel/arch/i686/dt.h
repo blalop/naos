@@ -3,7 +3,6 @@
 #include "types.h"
 
 // Descriptor tables (GDT, IDT)
-// see
 // https://web.archive.org/web/20160327011227/http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html
 
 typedef struct gdt_entry_ {

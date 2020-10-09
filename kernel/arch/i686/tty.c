@@ -39,8 +39,7 @@ void tty_printc(char c, vgacolor_t fg, vgacolor_t bg) {
             cursor.x = (cursor.x + 8) & ~(8 - 1);
             break;
         case ' ' ... '~':
-            VIDEO_ADDRESS[cursor_offset(cursor, MAX_COLS)] =
-                vga_entry(c, fg, bg);
+            VIDEO_ADDRESS[cursor_offset(cursor, MAX_COLS)] = vga_entry(c, fg, bg);
             cursor.x++;
             break;
     }
@@ -54,8 +53,7 @@ void tty_printc(char c, vgacolor_t fg, vgacolor_t bg) {
         for (size_t i = 0; i < MAX_COLS * (MAX_ROWS - 1); i++) {
             VIDEO_ADDRESS[i] = VIDEO_ADDRESS[i + MAX_COLS];
         }
-        for (size_t i = MAX_COLS * (MAX_ROWS - 1); i < MAX_COLS * MAX_ROWS;
-             i++) {
+        for (size_t i = MAX_COLS * (MAX_ROWS - 1); i < MAX_COLS * MAX_ROWS; i++) {
             VIDEO_ADDRESS[i] = vga_entry(' ', BLACK, BLACK);
         }
         cursor.y = MAX_ROWS - 1;

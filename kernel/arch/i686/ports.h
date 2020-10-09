@@ -3,7 +3,7 @@
 #include "types.h"
 
 // x86 I/O ports
-// see https://wiki.osdev.org/I/O_Ports
+// https://wiki.osdev.org/I/O_Ports
 
 static const uint16_t REG_SCREEN_CTRL = 0x3D4;
 static const uint16_t REG_SCREEN_DATA = 0x3D5;

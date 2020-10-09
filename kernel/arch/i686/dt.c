@@ -9,8 +9,7 @@ gdt_ptr_t gdt_ptr;
 
 extern void gdt_flush(uint32_t addr);
 
-static void gdt_set_gate(int32_t num, uint16_t base, uint32_t limit,
-                         uint8_t access, uint8_t gran) {
+static void gdt_set_gate(int32_t num, uint16_t base, uint32_t limit, uint8_t access, uint8_t gran) {
     gdt_entries[num].base_low = (base & 0xFFFF);
     gdt_entries[num].base_middle = (base >> 16) & 0xFF;
     gdt_entries[num].base_high = (base >> 24) & 0xFF;
@@ -75,8 +74,7 @@ extern void isr31();
 
 extern void idt_flush(uint32_t addr);
 
-static void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel,
-                         uint8_t flags) {
+static void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags) {
     idt_entries[num].base_lo = base & 0xFFFF;
     idt_entries[num].base_hi = (base >> 16) & 0xFFFF;
 

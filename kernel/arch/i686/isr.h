@@ -3,8 +3,8 @@
 #include "types.h"
 
 // Interrupt services routines.
-// see https://github.com/cfenollosa/os-tutorial/tree/master/18-interrupts
-// see https://web.archive.org/web/20160327011227/http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html
+// https://github.com/cfenollosa/os-tutorial/tree/master/18-interrupts
+// https://web.archive.org/web/20160327011227/http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html
 
 typedef struct registers {
     uint32_t ds;                                      // Data segment selector
